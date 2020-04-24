@@ -9,7 +9,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 <br>
 
-> If you find yourself on this page, it means that either you are interested in building your own containerized images for genome analyses, and you have asked for access, either you are just curious in how the currently available ones were made. There is, of course, also the possibility of you being the one that has to update or maintain the images already build in HCMR. In all cases, keep reading and exploring!
+> If you find yourself on this page, it means that either you are interested in building your own containerized images for genome analyses, and you have asked for access, either you are just curious in how the currently available ones were made. In both cases, before proceeding, make sure that you have checked what we have already build, understand how it works, and try to capture the purpose of this technology  firstly from the side of the user, [here](https://nellieangelova.github.io/DNGAW/). There is, of course, also the possibility of you being the one that has to update or maintain the images already build in HCMR. In all cases, keep reading and exploring!
 
 <br>
 
@@ -24,7 +24,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 
 ### **Why Singularity?**
-> Singularity is a container platform, that lets you export the whole pipeline and its software in a single file, called an *image*. This image, can then be copied and executed in any environment that has Singularity installed and works with a linux based kernel. Everything that happens in the environment the image is spawning, affects the environment itself, meaning that the container image is using the host machine but does not interfer with its software part. Simply putted, the host does not need to have any of the tools, packages and softwares needed by the image to support it, which can only mean that your workflow is as portable as it can ever be. Moreover, since the whole pipeline is a single, autonomous image, it can also be submitted as a job in any cluster environment, which is and the actual point this project was build in the first place. The user of the image can run it in high performing environments and get his/her results as fast as possible, so he/she can continue researching in no time, and all that, without the need of dealing with compatability issues and various software installations that possibly require work by system administrators and changes in systems used by many users, such as cluster environments. 
+> Singularity is a container platform, that lets you export the whole pipeline and its software in a single file, called an *image*. This image, can then be copied and executed in any environment that has Singularity installed and works with a linux based kernel. Everything that happens in the environment the image is spawning, affects the environment itself, meaning that the container image is using the host machine but does not interfer with its software part. Simply putted, the host does not need to have any of the tools, packages and softwares needed by the image to support it, which can only mean that your workflow is as portable as it can ever be. Moreover, since the whole pipeline is a single, autonomous image, it can also be submitted as a job in any cluster environment, which is and the actual point this project was build in the first place. The user of the image can run it in high performing environments and get his/her results as fast as possible, so he/she can continue researching in no time, and all that, without the need of dealing with compatability issues and various software installations that possibly require work by system administrators and changes in systems used by many users, such as in cluster environments. 
 
 
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![SCS](/scs.png)
@@ -36,7 +36,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 <br>
 
-> When it comes to genome analysis, you can choose out of four different images, depending on your needs and your data. Here is a brief explanation for each one of them:
+> When it comes to genome analysis, the user can choose out of four different images, depending on his/her needs and of course, the available data. Here is a brief explanation for each one of them:
 
 <br>
 
@@ -69,15 +69,15 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 > QTQMinION is an image suitable for those who want to run a simple quality control of their MinION data, before and after their trimming. It actually performs quality check, trimming of the raw data and quality check all over again. The results of the image are again, the following three, located in the same directory your MinION raw data live in:
 
 1. One fastq file that contains the now trimmed data, named *porechop_output.fastq*
-2. One directory that contains the results of the quality control before trimming, named *Nano_Raw-report*
-3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed-report*
+2. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
+3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
 
 > Here are the tools used for this analysis:
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| NanoPlot     | Quality check |  |
-| Porechop    | Trimming     |   |
+| NanoPlot     | Quality check | 1.29.0 |
+| Porechop    | Trimming     |  0.2.3 |
 
 <br>
 
@@ -87,23 +87,35 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 **C. LongGA**
 
 > LongGA is an image suitable for those who want to run a whole genome assembly analysis from start to end, and got only long MinION reads at their disposal. Here are the main tools used by the pipeline, and all the results the image is spawning: 
->> QTQMinION is a part of LongGA
+>> QTQMinION is part of LongGA
 
 1. One fastq file that contains the now trimmed data, named *porechop_output.fastq*
-2. One directory that contains the results of the quality control before trimming, named *Nano_Raw-report*
-3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed-report*
-4. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. 
+2. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
+3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
+4. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. It contains the following subfolders and files:
+* (DIR) Flye: A folder containing the new assembly called *assembly.fasta*, and other side files.
+* (F) (x)_mapping.sam: A file generated through Minimap and used for polishing in Racon. x is a number and depends on the polishing rounds you've demanded in the configuration file. If for example your hyperparameter is 2, you will find two such files: 1_minimap.sam and 2_minimap.sam.
+* (F) racon_(x).fasta: Polished assembly file generated through the Racon. (x) once again depends on the number of iterations. If the number of polishing rounds is 3, you will find 3 such files: racon_1.fasta, racon_2.fasta and racon_consensus.fasta. The last file is the final result of this part, that serves as input in Medaka.
+* (F) racon_consensus.fasta.fai: A file for indexing of the latest racon fasta file.
+* (F) racon_consensus.fasta.mmi: A file for indexing of the latest racon fasta file.
+* (DIR) (Lineage_name): A folder containing information about the lineage used for the BUSCO analysis below. (e.g.*actinopterygii_odb9*)
+* (F) The .tar form of the above lineage folder.
+* (DIR) Medaka: A folder containing the final, fully polished assembly called *consensus.fasta*, and other side files.
+5. One directory that contains the results of the BUSCO quality controls after each assembly creation, named *Busco_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
+6. One directory that contains the results of the QUAST quality controls after each assembly creation, named *Quast_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
+7. A pdf in the same directory with the image, with a directed acyclic graph (DAG) generated by it, which show the dependencies and input-outputs of the jobs of the image for you to check and use as you like.
+
 
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| NanoPlot     | Quality check |  |
-| Porechop    | Trimming     |   |
+| NanoPlot     | Quality check | 1.29.0 |
+| Porechop    | Trimming     | 0.2.3  |
 | Flye   | Assembler  |  2.6 |
-| Busco    | Quality check     |   |
-| Quast   | Quality check     |   |
-| Racon   | Polishing     |   |
-| Medaka   | Polishing    |   |
+| Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
+| Quast   | Quality check     |  5.0.2 |
+| Racon   | Polishing     |  1.4.3 |
+| Medaka   | Polishing    | 0.9.2  |
 
 
 <br>
@@ -114,14 +126,27 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 > Long_Short_GA is an image suitable for those who want to run a whole genome assembly analysis from start to end, and got both long MinION reads and short Illumina reads at their disposal. Here are the tools and all the results the image is spawning: 
 >> Long_GA and QTQIllumina are parts of Long_Short_GA
+ 
 
-1. One fastq file that contains the now trimmed long data, named *porechop_output.fastq*
-2. One directory that contains the results of the quality control before trimming the long reads, named *Nano_Raw-report*
-3. One directory that contains the results of the quality control after trimming the long reads, named *Nano_Trimmed-report*
-4. One directory that contains the now trimmed short data, named *trimmomatic_output*
-5. One directory that contains the results of the quality control before trimming the short reads, named *Multiq_raw_report*
-6. One directory that contains the results of the quality control after trimming the short reads, named *Multiq_trimmed_report*
-7. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. 
+1. One directory that contains the now trimmed short data, named *trimmomatic_output*
+2. A file called *KmerGenie.html* inside the trimmomatic_output generated by the KmerGenie program and informing about the estimated genome size and kmers of the data
+3. One directory that contains the results of the quality control before trimming the short reads, named *Multiq_raw_report*
+4. One directory that contains the results of the quality control after trimming the short reads, named *Multiq_trimmed_report*
+5. One fastq file that contains the now trimmed data, named *porechop_output.fastq*
+6. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
+7. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
+8. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. It contains the following subfolders and files:
+* (DIR) Flye: A folder containing the new assembly called *assembly.fasta*, and other side files.
+* (F) (x)_mapping.sam: A file generated through Minimap and used for polishing in Racon. x is a number and depends on the polishing rounds you've demanded in the configuration file. If for example your hyperparameter is 2, you will find two such files: 1_minimap.sam and 2_minimap.sam.
+* (F) racon_(x).fasta: Polished assembly file generated through the Racon. (x) once again depends on the number of iterations. If the number of polishing rounds is 3, you will find 3 such files: racon_1.fasta, racon_2.fasta and racon_consensus.fasta. The last file is the final result of this part, that serves as input in Medaka.
+* (F) racon_consensus.fasta.fai: A file for indexing of the latest racon fasta file.
+* (F) racon_consensus.fasta.mmi: A file for indexing of the latest racon fasta file.
+* (DIR) (Lineage_name): A folder containing information about the lineage used for the BUSCO analysis below. (e.g.*actinopterygii_odb9*)
+* (F) The .tar form of the above lineage folder.
+* (DIR) Medaka: A folder containing the final, fully polished assembly called *consensus.fasta*, and other side files.
+9. One directory that contains the results of the BUSCO quality controls after each assembly creation, named *Busco_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
+10. One directory that contains the results of the QUAST quality controls after each assembly creation, named *Quast_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
+11. A pdf in the same directory with the image, with a directed acyclic graph (DAG) generated by it, which show the dependencies and input-outputs of the jobs of the image for you to check and use as you like.
 
 
 | Tools       | Description        | Version |
@@ -129,30 +154,25 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 | fastqc     | Quality check |  |
 | Trimmomatic     | Trimming |  |
 | Multiqc     | Quality check |  |
-| NanoPlot     | Quality check |  |
-| Porechop    | Trimming     |   |
-| Flye   | Assembler  |  2.6 |
-| Busco    | Quality check     |   |
-| Quast   | Quality check     |   |
-| Racon   | Polishing     |   |
-| Medaka   | Polishing    |   |
-| Pilon  | Polishing    |   |
+| NanoPlot     | Quality check | 1.29.0 |
+| Porechop    | Trimming     | 0.2.3  |
+| Flye   | Assembler  |  2.6 (Internal: KmerGenie: v1.70.16)|
+| Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
+| Quast   | Quality check     |  5.0.2 |
+| Racon   | Polishing     |  1.4.3 |
+| Medaka   | Polishing    | 0.9.2  |
+| Pilon  | Polishing    |  1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
 
 <br>
 
 ***
 
-> Thus, in order for you to run your analysis in your organism's or industry's server, all you need is:
 
-1. A server that has Singularity installed
-2. The image of the pipeline you wish to use for your analysis
-3. The corresponding configuration file along with the image, that lets you define different parameters for the analysis
-4. A script that submits the image as a job into the nodes of your cluster
+## **A LEGO logic**
 
+The main idea behind the composition of this project, was to build something out of individual pieces that can be used solely, maintained easily, and be generally *independent*. And here comes Conda. 
+[LEGO](/lego.jpg)
 
-## **Breaking down the steps that lead to the analysis**
-> Having found the image that correspond to the analysis you need, download it and copy it along with the configuration file in the *home folder* of your cluster account. A simple cp or a scp will do the trick. Once you're done, open the configuration file with *nano* to edit it. The configuration file is probably the most important component for your analysis to work, so take your time and double check all the paths and the parameters needed here. The file is made to work for all the currently available analyses, so your intervention and filling will in fact let the whole system know which image you are going to use and thus the goal of your chosen pipeline, so make sure to fill the right variables in order for your image to be executed properly. Inside the configuration file you will also find some requirements that your raw data should fulfill. If your data or data directories do not follow the standards, please make the appropriate changes before editing the configurations. <br>
-> Once done with all that, it's time to let the automated workflow do the rest for you. Follow the standars for running a job on your server's cluster to submit the image as follows (replace with the name of the actual image you have chosen):
 ```
 singularity run <image.simg>
 ```
