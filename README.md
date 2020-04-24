@@ -36,7 +36,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 <br>
 
-> When it comes to genome analysis, the user can choose out of four different images, depending on his/her needs and of course, the available data. Here is a brief explanation for each one of them:
+> When it comes to genome analysis, the user can choose out of four different images, depending on his/her needs and of course, the available data. If you've checked the userguide, you probably came across this image below. As you understand, the available analyses are parts of a bigger analysis and the whole project is somehow block-based.
 
 <br>
 
@@ -44,6 +44,12 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 ![Images](/4-pipelines.png)
 
 <br>
+
+## **A LEGO logic**
+
+> The main idea behind the composition of this project, was to build something out of individual pieces that could be used solely, maintained easily, and be generally *independent*. And here comes Conda. An analysis such as a genome assembly analysis is composed out of many steps, which can be seen as independent jobs. These jobs are the blocks, that all together create the main workflow. Each job has an input and gives an output, from another job or from the user, to another job and/or the user respectively. Each job has its own environment to run into.  
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![LEGO](/lego.jpg)
 
 **A. QTQIllumina**
 
@@ -167,12 +173,6 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 ***
 
-
-## **A LEGO logic**
-
-The main idea behind the composition of this project, was to build something out of individual pieces that can be used solely, maintained easily, and be generally *independent*. And here comes Conda.
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![LEGO](/lego.jpg)
 
 ```
 singularity run <image.simg>
