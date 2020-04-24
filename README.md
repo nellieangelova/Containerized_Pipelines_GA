@@ -172,7 +172,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 The main idea behind the composition of this project, was to build something out of individual pieces that can be used solely, maintained easily, and be generally *independent*. And here comes Conda.
 <br>
-[LEGO](/lego.jpg)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![LEGO](/lego.jpg)
 
 ```
 singularity run <image.simg>
