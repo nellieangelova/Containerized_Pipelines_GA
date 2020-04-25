@@ -65,8 +65,8 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 > Enough with the talking. Its time for some coding and packaging. If you are not yet familliar with the basic principles of Python, Conda, Snakemake and Singularity, this is the right time for you to worry.
 >> Each script and chunk of code mentioned here can be found in the folders and subfolders of the project in the current GitHub repository.
 
-# **Step 1: Creating a general environment of Singularity, and subsequently an image**
-> In order for the code to live somewhere, and this somewhere to be portable, you need Singularity. Now, according to its documentation, you can build an environment that can be a whole (almost) operating system. Here,  a **conda** super-environment is created. This new environment, can work wherever you run the final Singularity image we are going to build. The Singularity file is called *"LGASingularity"* and its coding in a simple text form, as Singularity has its own "language" for expressing things. When you open the file, you will see some specific blocks of code. 
+### **Step 1: Creating a general environment of Singularity, and subsequently an image**
+>In order for the code to live somewhere, and this somewhere to be portable, you need Singularity. Now, according to its documentation, you can build an environment that can be a whole (almost) operating system. Here,  a **conda** super-environment is created. This new environment, can work wherever you run the final Singularity image we are going to build. The Singularity file is called *"LGASingularity"* and its coding in a simple text form, as Singularity has its own "language" for expressing things. When you open the file, you will see some specific blocks of code. 
 * **Header**: The header ("Bootstrap", "From") is at the top of the file, and defines the base you want to use to build the container on to. It briefly describes the os or environemnt you wish to build everything in to.
 * **%files**: The files section uses the traditional copy (cp) command. Anything declared here, from files to folders, is included **in** the final image. So every single script or anything else may be necessary for the project to run, but we dont want the user to have anything to do with it, is included in the container apriori. This files can be found at the **root (/)** of the image. 
 * **%environment**: In this section, variables needed during the *runtime* are declared. Since no one has interaction with the image during runtime, things such as adding things to the $PATH apriori is essential.
@@ -77,14 +77,14 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 singularity run <image.simg>
 ```
 
-> When he does, he actually activates the following from inside of the image:
+>When he does, he actually activates the following from inside of the image:
 ```
 source activate /opt/conda/envs/LQTQ
 snakemake -j 20 --snakefile /LGASnakefile --use-conda --quiet --forcerun --nolock --restart-times 1 --keep-going
 snakemake -j 20 --snakefile /LGASnakefile --dag | dot -Tpdf > DAG.pdf
 rm -R config
 ```
-> The first row activates the first sub-environment, which also has snakemake installed, to begin the process. The second one is actually the command that initializes the workflow.
+>The first row activates the first sub-environment, which also has snakemake installed, to begin the process. The second one is actually the command that initializes the workflow.
 >> Braking down the snakemake command used:
 * j: The number of available cores. If the number is ommited, it is determined by Snakemake as the number of available CPU cores the machines has (for parallelism).
 * snakefile: The file which includes the rule definitions. Included during the %files stage while building the image.
@@ -95,7 +95,7 @@ rm -R config
 * restart-times: The number of times to restart failing jobs, if any.
 * keep-going: Go on with independent jobs if a job fails.
 > The third row, makes snakemake generate a pdf with the dependencies between the tasks, as an informative diagram for the user.
->The forth row deletes an temporary folder from the user's workdir.
+> The forth row deletes an temporary folder from the user's workdir.
 
 <br>
 > To build the image, go to the directory your files and your Singularity definition file lives in, and just run:
@@ -106,7 +106,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 ```
 > This will result in a .simg file in the same directory, which can be transfered and copied anywhere you wish to run it.
 
-# **Step 2: The Snakemake Pipeline**
+### **Step 2: The Snakemake Pipeline**
 > But what about the pipeline and its rules?
 > The pipeline needs also its definition file, mentioned above, and here, called *"LGASnakefile"*. It is copied inside the image and it lives in its root, so it can be called from there during runtime. This file holds the definition of each of the rules. Each rule has input(s), output(s), an environment to use, and a script with the code that needs to be executed. It can also have some parameters. Each environment used by each rule has its own definition file in YAML format, which is also included in the image during the %files stage. The Snakefile also contains the declaration of an existing configuration file to use, *"config.yaml"*, which contains the hyperparameters the workflow is going to use. This file is given to the user and has to be filled by him according to his needs, so it does not live inside the image, but should be copied by him in the same directory he copies the image into, for snakemake to be able to find it. Additionally, it has a rule called *all*, which has as inputs all the outputs all the rules of the workflow is spawnning, and assures that everything is generated smoothly during runtime. If an output file fails, the rule *all* fails, and thus the image.
 > One who needs to maintain or update an environment, has to do the following:
