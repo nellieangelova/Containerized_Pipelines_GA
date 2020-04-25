@@ -33,7 +33,6 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 <br>
 
 ## **About this project and its images**
-
 <br>
 
 > When it comes to genome analysis, the user can choose out of four different images, depending on his/her needs and of course, the available data. If you've checked the userguide, you probably came across this image below. As you understand, the available analyses are parts of a bigger analysis and the whole project is somehow block-based.
@@ -48,6 +47,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 ## **A LEGO logic**
 
 <br>
+
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![LEGO](/lego.jpg)
 
 > The main idea behind the composition of this project, was to build something out of individual pieces that could be used solely, maintained easily, and be generally *independent*. And here comes Conda to the rescue. An analysis such as a genome assembly analysis is composed out of many steps, which can be seen as independent jobs. These jobs are the blocks, that all together create the main workflow. Each job has an input and gives an output, from another job or from the user, to another job and/or the user respectively. In Snakemake terms, these jobs can be refered as *rules*. 
@@ -60,7 +60,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 <br>
 
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![JENGA](/jenga.jpg)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![JENGA](/jenga.jpg)
 
 
 
