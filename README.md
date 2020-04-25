@@ -47,9 +47,22 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 ## **A LEGO logic**
 
-> The main idea behind the composition of this project, was to build something out of individual pieces that could be used solely, maintained easily, and be generally *independent*. And here comes Conda. An analysis such as a genome assembly analysis is composed out of many steps, which can be seen as independent jobs. These jobs are the blocks, that all together create the main workflow. Each job has an input and gives an output, from another job or from the user, to another job and/or the user respectively. Each job has its own environment to run into.  
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![LEGO](/lego.jpg)
+
+> The main idea behind the composition of this project, was to build something out of individual pieces that could be used solely, maintained easily, and be generally *independent*. And here comes Conda to the rescue. An analysis such as a genome assembly analysis is composed out of many steps, which can be seen as independent jobs. These jobs are the blocks, that all together create the main workflow. Each job has an input and gives an output, from another job or from the user, to another job and/or the user respectively. In Snakemake terms, these jobs can be refered as *rules*. 
+> By using Singularity, a universal conda environment is created, which can host independent mini-environments and "pull their strings". With the help of conda, each rule has its own environment to run into. This environment includes a specific python version, if needed by the software it uses, and the softwares themselves, which are the basic tools needed by the rule to generate the desired output. For example, in the case of the Polishing step in the genome assembly analysis, three tools are needed to polish a Flye made assembly: Minimap2, Racon and Medaka. Each environment uses by default the version of Python the base conda environment was using during their creation. In this case, this is Python 3.6.10. If for example Racon was running only for versions of Python <3.5, we could and probably would make the Polishing environment to turn to that release so the rule can be executed. This environment is opened when the rule is about to be executed, and closes when the output is formed, without the universal environment being affected by any of these changes. 
+
+> The isolation of each process that can be seen as a mini-workflow, in an environment with specific tunnings, is very helpful when one needs to organize his/her workflow. It is very difficult for a developer to track all the changes made in a big, one-piece project with lots of data, packages and code. The **Divide and Conquer** logic here, where a main task is splitted in many sub-tasks running independently, gives a developer the opportunity to:
+* Organize better his/her code depending on the chunk, so having in fact better control over the project.
+* Re-use pieces of code and mini-workflows, that can easily stand on their own as images for specific tasks or participate in the creation of future images.
+* Maintain his/her project much easier, since updating or changing the release of one program wont mean changing the whole project itself. Just a piece of it, which can be downloaded, changed, and pushed back in its place in no time. Like Jenga!
+
+<br>
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![JENGA](/jenga.jpg)
+
+
 
 **A. QTQIllumina**
 
