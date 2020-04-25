@@ -120,9 +120,11 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 6. Run the images to assure that everything works smoothly before giving them to the community.
 7. Update the webpages and related information lists to keep track of the changes and inform the community about them.
 
-# **The environments and their use**
+## **The environments and their use**
 > Here is a detailed list of all currently available environments and the images they are hosted into.
 >> If you took the time to check the available images in the userguide, as suggested, you already know that there are four of them (SQTQ, LQTQ, LGA and LSGA), and each one is more or less a part of or an extension of another. This of course comes as a result of all said above and their combinations according to the community needs. 
+
+<br>
 
 **SQTQ**:
 > SQTQ serves in two images (SQTQ, and LSGA) and five rules (fastq_c, multic_c, trimming_s, fastq_c_t, multiq_c_t). It contains programs that check the quality of short raw Illumina data, trim them, and then check the quality of the trimming.
@@ -135,6 +137,8 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Multiqc     | Creates a summary of the fastqc runs for each Illumina file. |  |
 | Trimmomatic    | Trimms the Illumina raw data.     |   |
 
+<br>
+
 **LQTQ**:
 > LQTQ serves in three images (LQTQ, LGA and LSGA) and three rules (nanoq_c, trimming_l, nanoq_c_t). It contains programs that check the quality of long raw MinION data, trim them, and then check the quality of the trimming.
 
@@ -146,6 +150,8 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | NanoPlot     | Creates a summary of the quality check run for the MinION file. | 1.29.0 |
 | Porechop    | Trims the MinION data.  |  0.2.3 |
 
+<br>
+
 **FlyeAss**:
 > FlyeAss serves in two images (LGA and LSGA) and one rule (FlyeAssGenie). It contains programs that estimate the genome size with the help of short Illumina data, if any, and create the first assembly out of the MinION data.
 
@@ -154,6 +160,8 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 |Python   | An older version needed by KmerGenie. | 2.7.17 |
 |Flye   | MinION Assembler  |  2.6 |
 |KmerGenie  | Genome size estimation for assembly. |1.70.16|
+
+<br>
 
 **QAssembly**:
 > QAssembly serves in two images (LGA and LSGA) and three rules (QA_1,QA_2,QA_3). It contains programs that estimate the quality of a given assembly.
@@ -164,6 +172,8 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2) |
 | Quast   | Quality check of a given assembly.    |  5.0.2 |
 
+<br>
+
 **Polishing**:
 > Polishing serves in two images (LGA and LSGA) and one rule (Polishing). It contains programs that polish a given assembly file in rounds.
 
@@ -172,6 +182,8 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
 | Racon   | Polishes a given assembly file.   |  1.4.3 |
 | Medaka   | Creates some needed files (e.g. .bam) for Racon polishing.    | 0.9.2  |
+
+<br>
 
 **Piloning**:
 > Piloning serves in just one image (LSGA) and one rule (Piloning). It contains programs that polish a given assembly file through correcting errors by using short Illumina reads.
