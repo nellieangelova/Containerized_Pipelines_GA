@@ -158,8 +158,8 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 |Python   | An older version needed by KmerGenie. | 2.7.17 |
-|Flye   | MinION Assembler  |  2.6 |
-|KmerGenie  | Genome size estimation for assembly. |1.70.16|
+|Flye   | MinION Assembler |  2.6 |
+|KmerGenie  | Genome size estimation for the upcoming assembly, out of Illumina data (if any). |1.70.16|
 
 <br>
 
@@ -169,7 +169,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 | Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
-| Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2) |
+| Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2, due to multithreading errors of newer versions.) |
 | Quast   | Quality check of a given assembly.    |  5.0.2 |
 
 <br>
@@ -179,9 +179,9 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
+| Python  | Version of the python version of the base Conda used, during build time. | 3.6.10 |
 | Racon   | Polishes a given assembly file.   |  1.4.3 |
-| Medaka   | Creates some needed files (e.g. .bam) for Racon polishing.    | 0.9.2  |
+| Medaka  | Creates some needed files (e.g. bam files) for needed by the Racon program.    | 0.9.2  |
 
 <br>
 
@@ -190,7 +190,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| Pilon  | Polishing a given assembly file with both MinION and Illumina reads.   |  1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
+| Pilon  | Polishing a given assembly file with both MinION and Illumina reads for creating a final consensus assembly.   |1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
 
 
 <br>
