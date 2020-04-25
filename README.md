@@ -46,8 +46,6 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 ## **A LEGO logic**
 
-<br>
-
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![LEGO](/lego.jpg)
 
 > The main idea behind the composition of this project, was to build something out of individual pieces that could be used solely, maintained easily, and be generally *independent*. And here comes Conda to the rescue. An analysis such as a genome assembly analysis is composed out of many steps, which can be seen as independent jobs. These jobs are the blocks, that all together create the main workflow. Each job has an input and gives an output, from another job or from the user, to another job and/or the user respectively. In Snakemake terms, these jobs can be refered as *rules*. 
@@ -56,140 +54,133 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 > The isolation of each process that can be seen as a mini-workflow, in an environment with specific tunnings, is very helpful when one needs to organize his/her workflow. It is very difficult for a developer to track all the changes made in a big, one-piece project with lots of data, packages and code. The **Divide and Conquer** logic here, where a main task is splitted in many sub-tasks running independently, gives a developer the opportunity to:
 * Organize better his/her code depending on the chunk, so having in fact better control over the project.
 * Re-use pieces of code and mini-workflows, that can easily stand on their own as images for specific tasks or participate in the creation of future images.
-* Maintain his/her project much easier, since updating or changing the release of one program wont mean changing the whole project itself. Just a piece of it, which can be downloaded, changed, and pushed back in its place in no time. Like Jenga!
+* Maintain his/her project much easier, since updating or changing the release of one program wont mean changing the whole project itself. Just a piece of it, which can be downloaded, changed, and pushed back in its place in no time. Like a piece of Jenga!
 
 <br>
 
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;![JENGA](/jenga.jpg)
 
-
-
-**A. QTQIllumina**
-
-> QTQIllumina is an image suitable for those who want to run a simple quality control of their short reads data, before and after their trimming, when planning to use long and short reads combination for assembling a genome. It actually performs quality check, trimming of the raw data and quality check all over again. The results of the image are the following, located in the same directory your raw data live in:
-
-1. One directory that contains the now trimmed short data, named *trimmomatic_output*
-2. One directory that contains the results of the quality control before trimming the short reads, named *Multiq_raw_report*
-3. One directory that contains the results of the quality control after trimming the short reads, named *Multiq_trimmed_report*
-
-> Here are the tools used for this analysis:
-
-| Tools       | Description        | Version |
-| ------------- |:-------------:| -----:|
-| fastqc     | Quality check |  |
-| Multiqc     | Quality check |  |
-| Trimmomatic    | Trimming     |   |
-
+## **Diving Deeper into the creation and composition of each environment and subsequently the images**
 <br>
+> Enough with the talking. Its time for some coding and packaging. If you are not yet familliar with the basic principles of Python, Conda, Snakemake and Singularity, this is the right time for you to worry.
+>> Each script and chunk of code mentioned here can be found in the folders and subfolders of the project in the current GitHub repository.
 
-***
-**B. QTQMinION**
-
-> QTQMinION is an image suitable for those who want to run a simple quality control of their MinION data, before and after their trimming. It actually performs quality check, trimming of the raw data and quality check all over again. The results of the image are again, the following three, located in the same directory your MinION raw data live in:
-
-1. One fastq file that contains the now trimmed data, named *porechop_output.fastq*
-2. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
-3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
-
-> Here are the tools used for this analysis:
-
-| Tools       | Description        | Version |
-| ------------- |:-------------:| -----:|
-| NanoPlot     | Quality check | 1.29.0 |
-| Porechop    | Trimming     |  0.2.3 |
-
-<br>
-
-***
-
-
-**C. LongGA**
-
-> LongGA is an image suitable for those who want to run a whole genome assembly analysis from start to end, and got only long MinION reads at their disposal. Here are the main tools used by the pipeline, and all the results the image is spawning: 
->> QTQMinION is part of LongGA
-
-1. One fastq file that contains the now trimmed data, named *porechop_output.fastq*
-2. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
-3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
-4. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. It contains the following subfolders and files:
-* (DIR) Flye: A folder containing the new assembly called *assembly.fasta*, and other side files.
-* (F) (x)_mapping.sam: A file generated through Minimap and used for polishing in Racon. x is a number and depends on the polishing rounds you've demanded in the configuration file. If for example your hyperparameter is 2, you will find two such files: 1_minimap.sam and 2_minimap.sam.
-* (F) racon_(x).fasta: Polished assembly file generated through the Racon. (x) once again depends on the number of iterations. If the number of polishing rounds is 3, you will find 3 such files: racon_1.fasta, racon_2.fasta and racon_consensus.fasta. The last file is the final result of this part, that serves as input in Medaka.
-* (F) racon_consensus.fasta.fai: A file for indexing of the latest racon fasta file.
-* (F) racon_consensus.fasta.mmi: A file for indexing of the latest racon fasta file.
-* (DIR) (Lineage_name): A folder containing information about the lineage used for the BUSCO analysis below. (e.g.*actinopterygii_odb9*)
-* (F) The .tar form of the above lineage folder.
-* (DIR) Medaka: A folder containing the final, fully polished assembly called *consensus.fasta*, and other side files.
-5. One directory that contains the results of the BUSCO quality controls after each assembly creation, named *Busco_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
-6. One directory that contains the results of the QUAST quality controls after each assembly creation, named *Quast_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
-7. A pdf in the same directory with the image, with a directed acyclic graph (DAG) generated by it, which show the dependencies and input-outputs of the jobs of the image for you to check and use as you like.
-
-
-
-| Tools       | Description        | Version |
-| ------------- |:-------------:| -----:|
-| NanoPlot     | Quality check | 1.29.0 |
-| Porechop    | Trimming     | 0.2.3  |
-| Flye   | Assembler  |  2.6 |
-| Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
-| Quast   | Quality check     |  5.0.2 |
-| Racon   | Polishing     |  1.4.3 |
-| Medaka   | Polishing    | 0.9.2  |
-
-
-<br>
-
-***
-
-**D. Long_Short_GA**
-
-> Long_Short_GA is an image suitable for those who want to run a whole genome assembly analysis from start to end, and got both long MinION reads and short Illumina reads at their disposal. Here are the tools and all the results the image is spawning: 
->> Long_GA and QTQIllumina are parts of Long_Short_GA
- 
-
-1. One directory that contains the now trimmed short data, named *trimmomatic_output*
-2. A file called *KmerGenie.html* inside the trimmomatic_output generated by the KmerGenie program and informing about the estimated genome size and kmers of the data
-3. One directory that contains the results of the quality control before trimming the short reads, named *Multiq_raw_report*
-4. One directory that contains the results of the quality control after trimming the short reads, named *Multiq_trimmed_report*
-5. One fastq file that contains the now trimmed data, named *porechop_output.fastq*
-6. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
-7. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
-8. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. It contains the following subfolders and files:
-* (DIR) Flye: A folder containing the new assembly called *assembly.fasta*, and other side files.
-* (F) (x)_mapping.sam: A file generated through Minimap and used for polishing in Racon. x is a number and depends on the polishing rounds you've demanded in the configuration file. If for example your hyperparameter is 2, you will find two such files: 1_minimap.sam and 2_minimap.sam.
-* (F) racon_(x).fasta: Polished assembly file generated through the Racon. (x) once again depends on the number of iterations. If the number of polishing rounds is 3, you will find 3 such files: racon_1.fasta, racon_2.fasta and racon_consensus.fasta. The last file is the final result of this part, that serves as input in Medaka.
-* (F) racon_consensus.fasta.fai: A file for indexing of the latest racon fasta file.
-* (F) racon_consensus.fasta.mmi: A file for indexing of the latest racon fasta file.
-* (DIR) (Lineage_name): A folder containing information about the lineage used for the BUSCO analysis below. (e.g.*actinopterygii_odb9*)
-* (F) The .tar form of the above lineage folder.
-* (DIR) Medaka: A folder containing the final, fully polished assembly called *consensus.fasta*, and other side files.
-9. One directory that contains the results of the BUSCO quality controls after each assembly creation, named *Busco_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
-10. One directory that contains the results of the QUAST quality controls after each assembly creation, named *Quast_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
-11. A pdf in the same directory with the image, with a directed acyclic graph (DAG) generated by it, which show the dependencies and input-outputs of the jobs of the image for you to check and use as you like.
-
-
-| Tools       | Description        | Version |
-| ------------- |:-------------:| -----:|
-| fastqc     | Quality check |  |
-| Trimmomatic     | Trimming |  |
-| Multiqc     | Quality check |  |
-| NanoPlot     | Quality check | 1.29.0 |
-| Porechop    | Trimming     | 0.2.3  |
-| Flye   | Assembler  |  2.6 (Internal: KmerGenie: v1.70.16)|
-| Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
-| Quast   | Quality check     |  5.0.2 |
-| Racon   | Polishing     |  1.4.3 |
-| Medaka   | Polishing    | 0.9.2  |
-| Pilon  | Polishing    |  1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
-
-<br>
-
-***
-
+# **Step 1: Creating a general environment of Singularity, and subsequently an image**
+> In order for the code to live somewhere, and this somewhere to be portable, you need Singularity. Now, according to its documentation, you can build an environment that can be a whole (almost) operating system. Here,  a **conda** super-environment is created. This new environment, can work wherever you run the final Singularity image we are going to build. The Singularity file is called *"LGASingularity"* and its coding in a simple text form, as Singularity has its own "language" for expressing things. When you open the file, you will see some specific blocks of code. 
+* **Header**: The header ("Bootstrap", "From") is at the top of the file, and defines the base you want to use to build the container on to. It briefly describes the os or environemnt you wish to build everything in to.
+* **%files**: The files section uses the traditional copy (cp) command. Anything declared here, from files to folders, is included **in** the final image. So every single script or anything else may be necessary for the project to run, but we dont want the user to have anything to do with it, is included in the container apriori. This files can be found at the **root (/)** of the image. 
+* **%environment**: In this section, variables needed during the *runtime* are declared. Since no one has interaction with the image during runtime, things such as adding things to the $PATH apriori is essential.
+* **%post**: The important thing to note here is that a Singularity image, may work like an independent system, but uses the Linux-based kernel of its host. Since a user inside the image cannot and should not have sudo privileges on the host system, some basic commands such as activating environments should be written in the *bashrc* of the conatiner during *build* time, while one builds its images as an admin on his own machine. 
+* **%runscript**: The runscript section includes everything you want to run during runtime. When the image is ready, and run via the *singularity run* command, everything included here will be executed  progressively. In the case of this project, the user is asked to just run the image as a job into his cluster, with the simple command:
 
 ```
 singularity run <image.simg>
 ```
+
+> When he does, he actually activates the following from inside of the image:
+```
+source activate /opt/conda/envs/LQTQ
+snakemake -j 20 --snakefile /LGASnakefile --use-conda --quiet --forcerun --nolock --restart-times 1 --keep-going
+snakemake -j 20 --snakefile /LGASnakefile --dag | dot -Tpdf > DAG.pdf
+rm -R config
+```
+> The first row activates the first sub-environment, which also has snakemake installed, to begin the process. The second one is actually the command that initializes the workflow.
+>> Braking down the snakemake command used:
+* j: The number of available cores. If the number is ommited, it is determined by Snakemake as the number of available CPU cores the machines has (for parallelism).
+* snakefile: The file which includes the rule definitions. Included during the %files stage while building the image.
+* use-conda: Make conda use the specific environment mentioned in each rule for its execution.
+* quiet: Do not output any progress information.
+* forcerun: Force the re-execution of the rules or files (updates outputs if run again).
+* nolock: Does not lock the working directory if something goes wrong, so the input files can be accesable for a future re-run.
+* restart-times: The number of times to restart failing jobs, if any.
+* keep-going: Go on with independent jobs if a job fails.
+> The third row, makes snakemake generate a pdf with the dependencies between the tasks, as an informative diagram for the user.
+>The forth row deletes an temporary folder from the user's workdir.
+
+<br>
+> To build the image, go to the directory your files and your Singularity definition file lives in, and just run:
+
+```
+sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definition_File>
+
+```
+> This will result in a .simg file in the same directory, which can be transfered and copied anywhere you wish to run it.
+
+# **Step 2: The Snakemake Pipeline**
+> But what about the pipeline and its rules?
+> The pipeline needs also its definition file, mentioned above, and here, called *"LGASnakefile"*. It is copied inside the image and it lives in its root, so it can be called from there during runtime. This file holds the definition of each of the rules. Each rule has input(s), output(s), an environment to use, and a script with the code that needs to be executed. It can also have some parameters. Each environment used by each rule has its own definition file in YAML format, which is also included in the image during the %files stage. The Snakefile also contains the declaration of an existing configuration file to use, *"config.yaml"*, which contains the hyperparameters the workflow is going to use. This file is given to the user and has to be filled by him according to his needs, so it does not live inside the image, but should be copied by him in the same directory he copies the image into, for snakemake to be able to find it. Additionally, it has a rule called *all*, which has as inputs all the outputs all the rules of the workflow is spawnning, and assures that everything is generated smoothly during runtime. If an output file fails, the rule *all* fails, and thus the image.
+> One who needs to maintain or update an environment, has to do the following:
+1. Download the .yml file of the environment of interest.
+2. Create an environment from it on his/her machine.
+3. Make the changes.
+4. Export the environment in a new .yml file, which will take the place of the previous one.
+5. Build again the affected images with the new .yml file.
+6. Run the images to assure that everything works smoothly before giving them to the community.
+7. Update the webpages and related information lists to keep track of the changes and inform the community about them.
+
+# **The environments and their use**
+> Here is a detailed list of all currently available environments and the images they are hosted into.
+>> If you took the time to check the available images in the userguide, as suggested, you already know that there are four of them (SQTQ, LQTQ, LGA and LSGA), and each one is more or less a part of or an extension of another. This of course comes as a result of all said above and their combinations according to the community needs. 
+
+**SQTQ**:
+>> SQTQ serves in two images (SQTQ, and LSGA) and five rules (fastq_c, multic_c, trimming_s, fastq_c_t, multiq_c_t). It contains programs that check the quality of short raw Illumina data, trim them, and then check the quality of the trimming.
+
+| Tools       | Description        | Version |
+| ------------- |:-------------:| -----:|
+| Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
+| Snakemake     | Since this environment serves and solo for an image, it has to serve as base and include Snakemake. | 5.0.8 |
+| fastqc     | Performs quality check of the Illumina data.|  |
+| Multiqc     | Creates a summary of the fastqc runs for each Illumina file. |  |
+| Trimmomatic    | Trimms the Illumina raw data.     |   |
+
+**LQTQ**:
+>> LQTQ serves in three images (LQTQ, LGA and LSGA) and three rules (nanoq_c, trimming_l, nanoq_c_t). It contains programs that check the quality of long raw MinION data, trim them, and then check the quality of the trimming.
+
+
+| Tools       | Description        | Version |
+| ------------- |:-------------:| -----:|
+| Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
+| Snakemake     | Since this environment serves and solo for an image, it has to serve as base and include Snakemake. It serves as base also for the rest two images.| 5.0.8 |
+| NanoPlot     | Creates a summary of the quality check run for the MinION file. | 1.29.0 |
+| Porechop    | Trims the MinION data.  |  0.2.3 |
+
+**FlyeAss**:
+>> FlyeAss serves in two images (LGA and LSGA) and one rule (FlyeAssGenie). It contains programs that estimate the genome size with the help of short Illumina data, if any, and create the first assembly out of the MinION data.
+
+|Tools       | Description        | Version |
+| ------------- |:-------------:| -----:|
+|Python   | An older version needed by KmerGenie. | 2.7.17 |
+|Flye   | MinION Assembler  |  2.6 |
+|KmerGenie  | Genome size estimation for assembly. |1.70.16|
+
+**QAssembly**:
+>> QAssembly serves in two images (LGA and LSGA) and three rules (QA_1,QA_2,QA_3). It contains programs that estimate the quality of a given assembly.
+
+|Tools       | Description        | Version |
+| ------------- |:-------------:| -----:|
+| Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
+| Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2) |
+| Quast   | Quality check of a given assembly.    |  5.0.2 |
+
+**Polishing**:
+>> Polishing serves in two images (LGA and LSGA) and one rule (Polishing). It contains programs that polish a given assembly file in rounds.
+
+|Tools       | Description        | Version |
+| ------------- |:-------------:| -----:|
+| Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
+| Racon   | Polishes a given assembly file.   |  1.4.3 |
+| Medaka   | Creates needed file for Racon polishing.    | 0.9.2  |
+
+**Piloning**:
+>> Piloning serves in just one image (LSGA) and one rule (Piloning). It contains programs that polish a given assembly file through correcting errors by using short Illumina reads.
+
+| Tools       | Description        | Version |
+| ------------- |:-------------:| -----:|
+| Pilon  | Polishing with both MinION and Illumina reads.   |  1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
+
+
+<br>
+
 
 ***
 #### Please credit accordingly:
