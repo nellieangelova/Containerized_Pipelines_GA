@@ -62,6 +62,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 
 ## **Diving Deeper into the creation and composition of each environment and subsequently the images**
 <br>
+
 > Enough with the talking. Its time for some coding and packaging. If you are not yet familliar with the basic principles of Python, Conda, Snakemake and Singularity, this is the right time for you to worry.
 >> Each script and chunk of code mentioned here can be found in the folders and subfolders of the project in the current GitHub repository.
 
@@ -98,6 +99,7 @@ rm -R config
 > The forth row deletes an temporary folder from the user's workdir.
 
 <br>
+
 > To build the image, go to the directory your files and your Singularity definition file lives in, and just run:
 
 ```
@@ -123,7 +125,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 >> If you took the time to check the available images in the userguide, as suggested, you already know that there are four of them (SQTQ, LQTQ, LGA and LSGA), and each one is more or less a part of or an extension of another. This of course comes as a result of all said above and their combinations according to the community needs. 
 
 **SQTQ**:
->> SQTQ serves in two images (SQTQ, and LSGA) and five rules (fastq_c, multic_c, trimming_s, fastq_c_t, multiq_c_t). It contains programs that check the quality of short raw Illumina data, trim them, and then check the quality of the trimming.
+> SQTQ serves in two images (SQTQ, and LSGA) and five rules (fastq_c, multic_c, trimming_s, fastq_c_t, multiq_c_t). It contains programs that check the quality of short raw Illumina data, trim them, and then check the quality of the trimming.
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
@@ -134,7 +136,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Trimmomatic    | Trimms the Illumina raw data.     |   |
 
 **LQTQ**:
->> LQTQ serves in three images (LQTQ, LGA and LSGA) and three rules (nanoq_c, trimming_l, nanoq_c_t). It contains programs that check the quality of long raw MinION data, trim them, and then check the quality of the trimming.
+> LQTQ serves in three images (LQTQ, LGA and LSGA) and three rules (nanoq_c, trimming_l, nanoq_c_t). It contains programs that check the quality of long raw MinION data, trim them, and then check the quality of the trimming.
 
 
 | Tools       | Description        | Version |
@@ -145,7 +147,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Porechop    | Trims the MinION data.  |  0.2.3 |
 
 **FlyeAss**:
->> FlyeAss serves in two images (LGA and LSGA) and one rule (FlyeAssGenie). It contains programs that estimate the genome size with the help of short Illumina data, if any, and create the first assembly out of the MinION data.
+> FlyeAss serves in two images (LGA and LSGA) and one rule (FlyeAssGenie). It contains programs that estimate the genome size with the help of short Illumina data, if any, and create the first assembly out of the MinION data.
 
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
@@ -154,7 +156,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 |KmerGenie  | Genome size estimation for assembly. |1.70.16|
 
 **QAssembly**:
->> QAssembly serves in two images (LGA and LSGA) and three rules (QA_1,QA_2,QA_3). It contains programs that estimate the quality of a given assembly.
+> QAssembly serves in two images (LGA and LSGA) and three rules (QA_1,QA_2,QA_3). It contains programs that estimate the quality of a given assembly.
 
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
@@ -163,20 +165,20 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Quast   | Quality check of a given assembly.    |  5.0.2 |
 
 **Polishing**:
->> Polishing serves in two images (LGA and LSGA) and one rule (Polishing). It contains programs that polish a given assembly file in rounds.
+> Polishing serves in two images (LGA and LSGA) and one rule (Polishing). It contains programs that polish a given assembly file in rounds.
 
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 | Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
 | Racon   | Polishes a given assembly file.   |  1.4.3 |
-| Medaka   | Creates needed file for Racon polishing.    | 0.9.2  |
+| Medaka   | Creates some needed files (e.g. .bam) for Racon polishing.    | 0.9.2  |
 
 **Piloning**:
->> Piloning serves in just one image (LSGA) and one rule (Piloning). It contains programs that polish a given assembly file through correcting errors by using short Illumina reads.
+> Piloning serves in just one image (LSGA) and one rule (Piloning). It contains programs that polish a given assembly file through correcting errors by using short Illumina reads.
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| Pilon  | Polishing with both MinION and Illumina reads.   |  1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
+| Pilon  | Polishing a given assembly file with both MinION and Illumina reads.   |  1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
 
 
 <br>
