@@ -132,10 +132,10 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 | Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
-| Snakemake     | Since this environment serves and solo for an image, it has to serve as base and include Snakemake. | 5.0.8 |
-| fastqc     | Performs quality check of the Illumina data.|  |
-| Multiqc     | Creates a summary of the fastqc runs for each Illumina file. |  |
-| Trimmomatic    | Trimms the Illumina raw data.     |   |
+| Snakemake     | Since this environment serves and solo for an image, it has to serve as base and include Snakemake. | 5.3.0|
+| fastqc     | Performs quality check of the Illumina data.| 0.11.8| 
+| Multiqc     | Creates a summary of the fastqc runs for each Illumina file. | 1.6 |
+| Trimmomatic    | Trimms the Illumina raw data.     |  0.39 |
 
 <br>
 
@@ -146,7 +146,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 | Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
-| Snakemake     | Since this environment serves and solo for an image, it has to serve as base and include Snakemake. It serves as base also for the rest two images.| 5.0.8 |
+| Snakemake     | Since this environment serves and solo for an image, it has to serve as base and include Snakemake. It serves as base also for the rest two images.| 5.3.0 |
 | NanoPlot     | Creates a summary of the quality check run for the MinION file. | 1.29.0 |
 | Porechop    | Trims the MinION data.  |  0.2.3 |
 
@@ -190,7 +190,11 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
+| Python  | Version of the python version of the base Conda used, during build time. | 3.6.10 |
 | Pilon  | Polishing a given assembly file with both MinION and Illumina reads for creating a final consensus assembly.   |1.23 (Internal: Samtools: v1.7, Minimap2: v2.17)|
+| Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2, due to multithreading errors of newer versions.) |
+| Quast   | Quality check of a given assembly.    |  5.0.2 |
+
 
 
 <br>
