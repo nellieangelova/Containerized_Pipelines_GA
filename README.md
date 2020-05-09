@@ -104,7 +104,7 @@ rm -R config
 > To build the image, go to the directory your files and your Singularity definition file lives in, and just run:
 
 ```
-sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definition_File>
+sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definition_File>
 
 ```
 > This will result in a .simg file in the same directory, which can be transfered and copied anywhere you wish to run it.
