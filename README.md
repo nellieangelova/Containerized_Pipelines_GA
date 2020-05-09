@@ -14,13 +14,13 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 <br>
 
 ## **About the containerized images**
-> Let's start with some info and principles first. The pipeline analyses are made using [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) and containerized through [Singularity](https://sylabs.io/guides/3.5/user-guide/) with the help of the [Conda](https://docs.conda.io/en/latest/) package manager. If you are not familiar with any of these tools, this is the time for you to click on all three links above and get familiar with them, since they are the three pillars that make our technology work, and their understanding is fundamental for continuing. 
+> Let's start with some info and principles first. The pipeline analyses are made using [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) and containerized through [Singularity](https://sylabs.io/guides/3.5/user-guide/) with the help of the [Conda](https://docs.conda.io/en/latest/) package manager. If you are not familiar with any of these tools, this is the time for you to click on all three links above and get familiar with them, since they are the three pillars that make this technology work, and their understanding is fundamental for continuing. 
 
 ### **Why Snakemake?**
-> Snakemake is a great workflow manager. The workflows created through it are somehow logic based: inputs and outputs of every step, with cool accessorizes such as parameters and wildcards that let you use multiple files at once and create directories or files or both with a single line of code. It's features make your pipeline's coding really easy to handle, quick and memoriable. Moreover, its special features such us creating directed acyclic graphs (DAGs) of the jobs composing a pipeline can save you a lot of time from working on graphs and images with other tools. It can even let you run a pipeline without actually running it, to detect problems, update files and search for new dependencies among the files, which by the way, understands by itself just by the names of the files. Cool ha? The workflows are portable, and can even work on clusters or the cloud. Importantly enough, it can be combined with the python package manager Conda, and the container platform Singularity.
+> Snakemake is a great workflow manager. The workflows created through it are somehow logic based: inputs and outputs of every step, with accessorizes such as parameters and wildcards, that let you use multiple files at once and create directories (or files, or both) with a single line of code. It's features make your pipeline's coding really easy to handle, quick and memoriable. Moreover, its special features such us creating directed acyclic graphs (DAGs) of the jobs composing a pipeline can save you a lot of time from working on graphs and images with other tools. It can even let you run a pipeline without actually running it, to detect problems, update files and search for new dependencies among the files, which by the way, understands by itself just by the their names. The workflows are portable, and can even work on clusters or the cloud. Importantly enough, it can be combined with the python package manager Conda, and the container platform Singularity.
 
 ### **Why Conda?**
-> Conda is a package manager, created for the special task of creating isolated environments for important tools and jobs to be executed into, without interferring with the software of the host system. It actually creates mini-environments where you can run whatever you want, it installs the side packages and their dependencies you may need, switches between versions and installations according to your needs, and all that, without worrying you with compatability issues if handled right. It can create, save and switch between environments for many languages, such as Ruby and Java, but it was firstly and mainly created for Python users. And this can only mean, that its Python updates and features are the best in town. Now, if you have a Python based workflow manager that is composed by rules and tasks, and a Python based package manager that can create an isolated environment with everything this task may need to work, these two fellas can work together like chocolate and bannana. 
+> Conda is a package manager, created for the special task of creating isolated environments for important tools and jobs to be executed into, without interferring with the software of the host system. It actually creates mini-environments where you can run whatever you want, it installs the side packages and their dependencies you may need, switches between versions and installations according to your needs, and all that, without worrying you with compatability issues if handled right. It can create, save and switch between environments for many languages, such as Ruby and Java, but it was firstly and mainly created for Python users. And this can only mean, that it's Python updates and features are carefully maintained. Now, if you have a Python based workflow manager that is composed by rules and tasks, and a Python based package manager that can create an isolated environment with everything this task may need to work, you've got yourself some powerful technology to work on. 
 
 
 ### **Why Singularity?**
@@ -35,7 +35,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 ## **About this project and its images**
 <br>
 
-> When it comes to genome analysis, the user can choose out of four different images, depending on his/her needs and of course, the available data. If you've checked the userguide, you probably came across this image below. As you understand, the available analyses are parts of a bigger analysis and the whole project is somehow block-based.
+> When it comes to genome analysis, the user can choose out of four different images, depending on his/her needs and of course, the available data. If you've checked the userguide, you've probably already come across this image below. As you understand, the available analyses are parts of a bigger analysis and the whole project is somehow block-based.
 
 <br>
 
@@ -54,7 +54,7 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 > The isolation of each process that can be seen as a mini-workflow, in an environment with specific tunnings, is very helpful when one needs to organize his/her workflow. It is very difficult for a developer to track all the changes made in a big, one-piece project with lots of data, packages and code. The **Divide and Conquer** logic here, where a main task is splitted in many sub-tasks running independently, gives a developer the opportunity to:
 * Organize better his/her code depending on the chunk, so having in fact better control over the project.
 * Re-use pieces of code and mini-workflows, that can easily stand on their own as images for specific tasks or participate in the creation of future images.
-* Maintain his/her project much easier, since updating or changing the release of one program wont mean changing the whole project itself. Just a piece of it, which can be downloaded, changed, and pushed back in its place in no time. Like a piece of Jenga!
+* Maintain his/her project much easier, since updating or changing the release of one program won't mean changing the whole project itself. Just a piece of it, which can be downloaded, changed, and pushed back in its place in no time. Like a piece of Jenga!
 
 <br>
 
@@ -63,22 +63,22 @@ Re-usable block-builded,containerized pipelines for de novo genome assemblies.
 ## **Diving Deeper into the creation and composition of each environment and subsequently the images**
 <br>
 
-> Enough with the talking. Its time for some coding and packaging. If you are not yet familliar with the basic principles of Python, Conda, Snakemake and Singularity, this is the right time for you to worry.
->> Each script and chunk of code mentioned here can be found in the folders and subfolders of the project in the current GitHub repository.
+> If you are not familliar with the basic principles of Python, Conda, Snakemake and Singularity yet, this is the right time for you to **worry**. 
+>> Each script and code mentioned here can be found in the folders and subfolders of the project in the current GitHub repository, fully commented.
 
 ### **Step 1: Creating a general environment of Singularity, and subsequently an image**
->In order for the code to live somewhere, and this somewhere to be portable, you need Singularity. Now, according to its documentation, you can build an environment that can be a whole (almost) operating system. Here,  a **conda** super-environment is created. This new environment, can work wherever you run the final Singularity image we are going to build. The Singularity file is called *"LGASingularity"* and its coding in a simple text form, as Singularity has its own "language" for expressing things. When you open the file, you will see some specific blocks of code. 
+>In order for the code to live somewhere, and this somewhere to be portable, you need Singularity. Now, according to its documentation, you can build an environment that can be a whole (almost) operating system. Here,  a **conda super-environment** is created. This new environment, can work wherever you run the final Singularity image we are going to build. The Singularity file is called *"<name_of_the_image>Singularity"* and it is written in a simple text form, as Singularity has its own "language" for expressing things. When you open such a file, you will see some specific blocks of code. 
 * **Header**: The header ("Bootstrap", "From") is at the top of the file, and defines the base you want to use to build the container on to. It briefly describes the os or environemnt you wish to build everything in to.
-* **%files**: The files section uses the traditional copy (cp) command. Anything declared here, from files to folders, is included **in** the final image. So every single script or anything else may be necessary for the project to run, but we dont want the user to have anything to do with it, is included in the container apriori. This files can be found at the **root (/)** of the image. 
-* **%environment**: In this section, variables needed during the *runtime* are declared. Since no one has interaction with the image during runtime, things such as adding things to the $PATH apriori is essential.
-* **%post**: The important thing to note here is that a Singularity image, may work like an independent system, but uses the Linux-based kernel of its host. Since a user inside the image cannot and should not have sudo privileges on the host system, some basic commands such as activating environments should be written in the *bashrc* of the conatiner during *build* time, while one builds its images as an admin on his own machine. 
+* **%files**: The files section uses the traditional copy (cp) command. Anything declared here, from files to folders, is included **in** the final image. So every single script or anything else may be necessary for the project to run, but we don't want the user to have anything to do with it, is included in the container a priori. This files can be found at the **root (/)** of the image. 
+* **%environment**: In this section, variables needed during the *runtime* are declared. Since no one has interaction with the image during runtime, things such as adding something to the $PATH a priori is essential.
+* **%post**: The important thing to note here is that a Singularity image, may work like an independent system, but uses the Linux-based kernel of it's host. Since a user inside the image cannot and should not have sudo privileges on the host system, some basic commands such as activating environments should be written in the *bashrc* of the container during *build* time, while one builds it's images as an admin on his own machine. 
 * **%runscript**: The runscript section includes everything you want to run during runtime. When the image is ready, and run via the *singularity run* command, everything included here will be executed  progressively. In the case of this project, the user is asked to just run the image as a job into his cluster, with the simple command:
 
 ```
 singularity run <image.simg>
 ```
 
->When he does, he actually activates the following from inside of the image:
+>When he does, he actually activates some code from the inside of the image. For example, if he runs the LGA workflow, he activates the following from the *LGASingularity* file:
 ```
 source activate /opt/conda/envs/LQTQ
 snakemake -j --snakefile /LGASnakefile --use-conda --nolock --restart-times 1 --keep-going
@@ -95,7 +95,7 @@ rm -R config
 * nolock: Does not lock the working directory if something goes wrong, so the input files can be accesable for a future re-run.
 * restart-times: The number of times to restart failing jobs, if any.
 * keep-going: Go on with independent jobs if a job fails.
-> The third row, makes snakemake generate a pdf with the dependencies between the tasks, as an informative diagram for the user.
+> The third row, makes snakemake generate a .pdf with the dependencies between the tasks, as an informative diagram for the user.
 > The forth row creates a summary with the files generated by the pipeline, so the user can check whether all the outputs are created as expected or errors have occured. 
 > The fifth row deletes a temporary folder from the user's workdir.
 
@@ -111,7 +111,10 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 
 ### **Step 2: The Snakemake Pipeline**
 > But what about the pipeline and its rules?
-> The pipeline needs also its definition file, mentioned above, and here, called *"LGASnakefile"*. It is copied inside the image and it lives in its root, so it can be called from there during runtime. This file holds the definition of each of the rules. Each rule has input(s), output(s), an environment to use, and a script with the code that needs to be executed. It can also have some parameters. Each environment used by each rule has its own definition file in YAML format, which is also included in the image during the %files stage. The Snakefile also contains the declaration of an existing configuration file to use, *"config.yaml"*, which contains the hyperparameters the workflow is going to use. This file is given to the user and has to be filled by him according to his needs, so it does not live inside the image, but should be copied by him in the same directory he copies the image into, for snakemake to be able to find it. Additionally, it has a rule called *all*, which has as inputs all the outputs all the rules of the workflow is spawnning, and assures that everything is generated smoothly during runtime. If an output file fails, the rule *all* fails, and thus the image.
+> The pipeline needs also its definition file, mentioned above, here called *"<name_of_the_image>Snakefile"*. It is copied inside the image and it lives in its root, so it can be called from there during runtime. This file holds the definition of each of the rules. Each rule has input(s), output(s), an environment to use, and a script with the code that needs to be executed. It can also have some parameters. Each environment used by each rule has its own definition file in YAML format, which is also included in the image during the %files stage. The Snakefile also contains the declaration of an existing configuration file to use, *"config.yaml"*, which contains the hyperparameters the workflow is going to use. This file is given to the user and has to be filled by him according to his needs, so it does not live inside the image, but should be copied by him in the same directory he copies the image into, for snakemake to be able to find it. Additionally, it has a rule called *all*, which has as inputs all the outputs the image has to give to the user, and assures that everything is generated smoothly during runtime. If an output file fails, the rule *all* fails, and thus the image.
+
+<br>
+
 > One who needs to maintain or update an environment, has to do the following:
 1. Download the .yml file of the environment of interest.
 2. Create an environment from it on his/her machine.
@@ -123,7 +126,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 
 ## **The environments and their use**
 > Here is a detailed list of all currently available environments and the images they are hosted into.
->> If you took the time to check the available images in the userguide, as suggested, you already know that there are four of them (SQTQ, LQTQ, LGA and LSGA), and each one is more or less a part of or an extension of another. This of course comes as a result of all said above and their combinations according to the community needs. 
+>> If you took the time to check the available images in the userguide, as suggested, you already know that there are four of them (SQTQ, LQTQ, LGA and LSGA), and each one is more or less a part of or an extension of another. 
 
 <br>
 
@@ -197,12 +200,14 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Simgularity_Definit
 | Quast   | Quality check of a given assembly.    |  5.0.2 |
 
 
-
 <br>
 
+> To understand how each workflow works, you should check its Singularity definition file first, to see what it contains and the parameters of Snakemake. Then, check its Snakemake definition file, to understand the flow of the inputs and outputs for generating the desired output(s). Open the script responsible for each rule, and check the tools of its environment. 
+>> When developing something, the first and last thing you should do is walking in the shoes of your future users. Create the configuration files they will need, inform them about the additional steps they should make before and after running your code, and keep your documentaries and subsequently your users updated. 
 
 ***
 #### Please credit accordingly:
 > Author: Nellie Angelova, Bioinformatician, Hellenic Centre for Marine Research (HCMR) <br>
-> Coordinator/ Supervisor: Tereza Manoussaki, Researcher, Hellenic Centre for Marine Research (HCMR)
+> Coordinator/ Supervisor: Tereza Manoussaki, Researcher, Hellenic Centre for Marine Research (HCMR) <br>
+> Contact: n.angelova@hcmr.gr
 
