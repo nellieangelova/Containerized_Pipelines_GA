@@ -173,7 +173,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definit
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 | Python   | Version of the python version of the base Conda used, during build time. | 3.6.10 |
-| Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2, due to multithreading errors of newer versions.) |
+| Busco    | Quality check of a given assembly.     |  3.0.1 (Internal Blast: v2.2, due to multithreading errors of newer versions.) |
 | Quast   | Quality check of a given assembly.    |  5.0.2 |
 
 <br>
@@ -196,7 +196,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definit
 | ------------- |:-------------:| -----:|
 | Python  | Version of the python version of the base Conda used, during build time. | 3.6.10 |
 | Pilon  | Polishing a given assembly file with both MinION and Illumina reads for creating a final consensus assembly.   |1.23 (Internal: Samtools: v1.9, Minimap2: v2.17)|
-| Busco    | Quality check of a given assembly.     |  3.0 (Internal Blast: v2.2, due to multithreading errors of newer versions.) |
+| Busco    | Quality check of a given assembly.     |  3.0.1 (Internal Blast: v2.2, due to multithreading errors of newer versions.) |
 | Quast   | Quality check of a given assembly.    |  5.0.2 |
 
 
