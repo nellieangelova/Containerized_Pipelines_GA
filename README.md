@@ -168,7 +168,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definit
 <br>
 
 **QAssembly**:
-> QAssembly serves in two images (LGA and LSGA) and three rules (QA_1,QA_2,QA_3). It contains programs that estimate the quality of a given assembly.
+> QAssembly serves in two images (LGA and LSGA) and three rules (QA_1,QA_2). It contains programs that estimate the quality of a given assembly.
 
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
