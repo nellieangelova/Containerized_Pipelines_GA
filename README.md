@@ -1,5 +1,5 @@
-# **De Novo Genome Assembly Pipelines**
-Re-usable block-builded,containerized pipelines for de novo genome assemblies.
+# **Containerized Pipelines for Genome Assembly Analyses**
+Re-usable, block-builded, containerized pipelines for de-novo genome assembly construction analyses.
 
 <br>
 
