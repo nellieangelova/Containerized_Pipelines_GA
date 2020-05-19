@@ -15,11 +15,11 @@ if snakemake.params["S"] == "y":
             if "Predicted assembly size" in line:
                 N = [int(s) for s in line.split() if s.isdigit()]
 
-    os.system("flye --nano-raw " + snakemake.input[1] + " -o " + snakemake.input[0]+"/Assemblies/Flye -t "+snakemake.params["CP"]+" -g " + str(N[0]))
+    os.system("flye --nano-raw " + snakemake.input[1] + " -o " + snakemake.input[0]+"/Assemblies/Flye -t "+ str(snakemake.threads)+" -g " + str(N[0]))
 
 else:
     #If there are no short reads, the genome size estimation is a hyperarameter.
     if snakemake.params["GSE"] == " ":
         print("You haven't provided any Genome Size Estimation number during configuration. Please try again.")
     else:
-        os.system("flye --nano-raw " + snakemake.input[1] + " -o " + snakemake.input[0]+"/Assemblies/Flye -t "+snakemake.params["CP"]+" -g " + snakemake.params["GSE"])
+        os.system("flye --nano-raw " + snakemake.input[1] + " -o " + snakemake.input[0]+"/Assemblies/Flye -t "+ str(snakemake.threads)+" -g " + snakemake.params["GSE"])
