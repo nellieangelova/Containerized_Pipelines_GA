@@ -212,6 +212,6 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definit
 ***
 #### Please credit accordingly:
 > Author: Nellie Angelova, Bioinformatician, Hellenic Centre for Marine Research (HCMR) <br>
-> Coordinator/ Supervisor: Tereza Manoussaki, Researcher, Hellenic Centre for Marine Research (HCMR) <br>
+> Coordinator/ Supervisor: Tereza Manousaki, Researcher, Hellenic Centre for Marine Research (HCMR) <br>
 > Contact: n.angelova@hcmr.gr
 
