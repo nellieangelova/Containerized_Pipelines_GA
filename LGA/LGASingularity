@@ -45,7 +45,7 @@ From: continuumio/miniconda3
 
 %runscript
     source activate /opt/conda/envs/LQTQ
-    snakemake -j --snakefile /LGASnakefile --use-conda --nolock --restart-times 1 --keep-going
+    snakemake -j --snakefile /LGASnakefile --use-conda --quiet --nolock --keep-going
     snakemake -j --snakefile /LGASnakefile --dag | dot -Tpdf > DAG.pdf
     snakemake -j --snakefile /LGASnakefile --summary > Summary.txt
     rm -R config

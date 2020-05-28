@@ -18,17 +18,18 @@ for iteration in range(1,int(snakemake.params["i"])+1):
 		os.system("minimap2 -ax map-ont racon_"+str(iteration-1)+".fasta "+snakemake.input[1]+" > "+str(iteration)+"_mapping.sam")
 		os.system("racon -m 8 -x -6 -g -8 -w 500 -t "+ str(snakemake.threads)+" "+snakemake.input[1]+" "+str(iteration)+"_mapping.sam racon_"+str(iteration-1)+".fasta >racon_"+str(iteration)+".fasta")
 		os.system("gzip "+str(iteration)+"_mapping.sam")
-		os.system("gzip racon_"+str(iteration-1)+".fasta)
+		os.system("gzip racon_"+str(iteration-1)+".fasta")
 
 	else:
 		os.system("minimap2 -ax map-ont racon_"+str(iteration-1)+".fasta "+snakemake.input[1]+ " > "+str(iteration)+"_mapping.sam")
 		os.system("racon -m 8 -x -6 -g -8 -w 500 -t "+ str(snakemake.threads)+" "+snakemake.input[1]+" "+str(iteration)+"_mapping.sam racon_"+str(iteration-1)+".fasta > racon_consensus.fasta")
 		os.system("gzip "+str(iteration)+"_mapping.sam")
-		os.system("gzip racon_"+str(iteration-1)+".fasta)
+		os.system("gzip racon_"+str(iteration-1)+".fasta")
 
 
 
 os.system("medaka_consensus -i "+snakemake.input[1]+" -d racon_consensus.fasta -t "+ str(snakemake.threads)+" -o "+snakemake.output[0][:-15])
-os.system("mv *_mapping.sam* "+snakemake.input[0][:-19]+"/Racon")
-os.system("mv racon_* "+snakemake.input[0][:-19]"/Racon")
+os.system("mkdir "+snakemake.input[0][:-19]+"/Racon/")
+os.system("mv *_mapping.sam* "+snakemake.input[0][:-19]+"/Racon/")
+os.system("mv racon_* "+snakemake.input[0][:-19]+"/Racon/")
 
