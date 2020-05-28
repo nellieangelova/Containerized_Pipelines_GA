@@ -3,6 +3,7 @@ LSGA
 
 All these files should be included during the build time of LGA.simg.
 There is one more folder, called "config", which is used by BUSCO and thus taken from it during installation.
+It should be included too, in one piece.
 It can either be taken from there, or from from the link below:
 https://www.dropbox.com/sh/2xhd4nwx9x89fk5/AAC1WAQxbmyzHU-KSBj-I7fqa?dl=0
 
