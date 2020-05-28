@@ -11,37 +11,46 @@ import os
 def Missed(B):
 
     ''' Returns the "Missing" number if the polishing is working, or stops the procedure if there is something wrong with the summary file.'''
-    with open(Q+'/short_summary_BUSCO.txt') as f:
-        datafile = f.readlines()
 
-    for s in datafile[-2].split():
-        if s.isdigit():
-            Missing_N = int(s)
-            return Missing_N
-        else:
-            print("This file does not include the information asked.")
-            global Missing
-            Missing = False
-            return
+    path = B+'/short_summary_BUSCO.txt'
+    if os.path.exists(path):
+
+        with open(path) as f:
+            datafile = f.readlines()
+
+        for s in datafile[-2].split():
+            if s.isdigit():
+                Missing_N = int(s)
+                return Missing_N
+    else:
+        print("This Busco file does not include the information asked.")
+        global Missing
+        Missing = False
+        return
+
+
 
 
 def N50(Q):
 
     ''' Returns the N50 number if the polishing is working, or stops the procedure if there is something wrong with the report file.'''
-    with open(B+'/report.txt') as f:
-        datafile = f.readlines()
 
-    for s in datafile:
-        if "N50" in s:
-            for spart in s.split():
-                if spart.isdigit():
-                    N = int(s)
-                    return N
-        else:
-            print("This file does not include the information asked.")
-            global Missing
-            Missing = False
-            return
+    path = Q +'/report.txt'
+    if os.path.exists(path):
+
+        with open(path) as f:
+            datafile = f.readlines()
+
+        for s in datafile[-5].split():
+            if s.isdigit():
+                N50 = int(s)
+                return N50
+
+    else:
+        print("This Quast file does not include the information asked.")
+        global Missing
+        Missing = False
+        return
 
 
 def Polish_with_Pilon(Rep, Ldir, Sdir, FastaFile, OutDir, L):
@@ -59,8 +68,9 @@ def Polish_with_Pilon(Rep, Ldir, Sdir, FastaFile, OutDir, L):
     os.system("python3.6 /run_BUSCO.py -i " +OutDir+"/"+ str(Rep)+ "_pilon.fasta -o BUSCO -m geno -l "+L+" -c " +str(snakemake.threads)+ " -sp " +snakemake.params["SP"])
 
     os.system("mv run_BUSCO " +Ldir+ "/Busco_Results/QA_Pilon"+str(Rep))
-    os.system("mv *mapP.* " + Outdir)
-    os.system("gzip -r " +Outdir+ "/!("+str(Rep)+ "_pilon.fasta)")
+    os.system("mv *mapP.* " + OutDir)
+    os.system("rm "+OutDir+"/*.sam")
+    os.system("gzip -r " +OutDir+ "/*.bam*")
     
     return (OutDir+"/"+str(Rep)+ "_pilon.fasta", Ldir+ "/Busco_Results/QA_Pilon"+str(Rep), Ldir+ "/Quast_Results/QA_Pilon"+str(Rep))
     
@@ -82,8 +92,8 @@ while Missing: #While the flag is TRUE, continue polishing.
     Second_Missing = Missed(Bfile)
     Second_N50 = N50(Qfile)
 
-    if ((Number - Second_Number)>=5) and ((First_N50 - Second_N50) >= 500000): #The conditions for breaking the loop
-        Number = Second_Number
+    if ((First_Missing - Second_Missing)>=5) and ((First_N50 - Second_N50) >= 500000): #The conditions for breaking the loop
+        First_Missing = Second_Missing
         First_N50 = Second_N50
     else:
         os.system("mv "+FastaFile+" "+snakemake.output[0]+"/final.fasta") #The last assembly is called final.fasta

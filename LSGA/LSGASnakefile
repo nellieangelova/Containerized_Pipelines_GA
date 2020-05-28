@@ -35,7 +35,6 @@ rule fastq_c:
 
 
 
-
 rule multiq_c:
     input:
         config["Sdatadir"]+"/quals"
