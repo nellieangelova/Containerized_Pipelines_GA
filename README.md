@@ -9,7 +9,7 @@ Re-usable, block-builded, containerized pipelines for de-novo genome assembly co
 
 <br>
 
-> If you find yourself on this page, it means that either you are interested in building your own containerized images for genome analyses, and you have asked for access, either you are just curious in how the currently available ones were made. In both cases, before proceeding, make sure that you have checked what we have already build, understand how it works, and try to capture the purpose of this technology  firstly from the side of the user, [here](https://nellieangelova.github.io/DNGAW/). There is, of course, also the possibility of you being the one that has to update or maintain the images already build in HCMR. In all cases, keep reading and exploring!
+> If you find yourself on this page, it means that either you are interested in building your own containerized images for genome analyses, and you have asked for access, either you are just curious in how the currently available ones were made. In both cases, before proceeding, make sure that you have checked what we have already build, understand how it works, and try to capture the purpose of this technology  firstly from the side of the user, [here](https://nellieangelova.github.io/De-Novo_Genome_Assembly_Pipelines/). There is, of course, also the possibility of you being the one that has to update or maintain the images already build in HCMR. In all cases, keep reading and exploring!
 
 <br>
 
