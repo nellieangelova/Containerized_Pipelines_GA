@@ -92,7 +92,7 @@ rm -R config
 * j: The number of available cores. If the number is ommited, it is determined by Snakemake as the number of available CPU cores the machine has (for parallelism, discussed later).
 * snakefile: The file which includes the rule definitions. Included during the %files stage while building the image.
 * use-conda: Make conda use the specific environment mentioned in each rule for its execution.
-* nolock: Does not lock the working directory if something goes wrong, so the input files can be accesable for a future re-run.
+* nolock: Does not lock the working directory if something goes wrong, so the input files can be accessible for a future re-run.
 * quiet: Keeping Snakemake from outputting excessive information about each rule's execution.
 * keep-going: Go on with independent jobs if a job fails.
 > The third row, makes snakemake generate a .pdf with the dependencies between the tasks, as an informative diagram for the user.
