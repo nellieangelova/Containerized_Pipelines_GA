@@ -188,7 +188,7 @@ sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definit
 |Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
 | Python  | Version of the python version of the base Conda used, during build time. | 3.6.10 |
-| Racon   | Polishes a given assembly file.   |  1.4.3 |
+| Racon   | Polishes a given assembly file.   |  1.4.12 |
 | Medaka  | Creates some files (e.g. bam files) needed by Racon for polishing.    | 0.9.2  |
 
 <br>
