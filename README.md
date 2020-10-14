@@ -78,7 +78,8 @@ Re-usable, block-builded, containerized pipelines for de-novo genome assembly co
 
 ```
 singularity run <image.simg>
-```
+´´´
+
 <br>
 
 >When he does, he actually activates some code from the inside of the image. For example, if he runs the LGA workflow, he activates the following from the *LGASingularity* file:
@@ -90,7 +91,7 @@ source activate /opt/conda/envs/LQTQ
 snakemake -j --snakefile /LGASnakefile --use-conda --nolock --quiet --keep-going
 snakemake -j --snakefile /LGASnakefile --dag | dot -Tpdf > DAG.pdf
 snakemake -j --snakefile /LGASnakefile --summary > Summary.txt
-```
+´´´
 
 <br>
 
