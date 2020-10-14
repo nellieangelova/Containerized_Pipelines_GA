@@ -74,18 +74,26 @@ Re-usable, block-builded, containerized pipelines for de-novo genome assembly co
 * **%post**: The important thing to note here is that a Singularity image, may work like an independent system, but uses the Linux-based kernel of it's host. Since a user inside the image cannot and should not have sudo privileges on the host system, some basic commands such as activating environments should be written in the *bashrc* of the container during *build* time, while one builds it's images as an admin on his own machine. 
 * **%runscript**: The runscript section includes everything you want to run during runtime. When the image is ready, and run via the *singularity run* command, everything included here will be executed  progressively. In the case of this project, the user is asked to just run the image as a job into his cluster, with the simple command:
 
+<br>
+
 ```
 singularity run <image.simg>
 ```
+<br>
 
 >When he does, he actually activates some code from the inside of the image. For example, if he runs the LGA workflow, he activates the following from the *LGASingularity* file:
+
+<br>
+
 ```
 source activate /opt/conda/envs/LQTQ
 snakemake -j --snakefile /LGASnakefile --use-conda --nolock --quiet --keep-going
 snakemake -j --snakefile /LGASnakefile --dag | dot -Tpdf > DAG.pdf
 snakemake -j --snakefile /LGASnakefile --summary > Summary.txt
-
 ```
+
+<br>
+
 >The first row activates the first sub-environment, which also has snakemake installed, to begin the process. The second one is actually the command that initializes the workflow.
 >>Braking down the snakemake command used:
 * j: The number of available cores. If the number is ommited, it is determined by Snakemake as the number of available CPU cores the machine has (for parallelism, discussed later).
@@ -104,8 +112,9 @@ snakemake -j --snakefile /LGASnakefile --summary > Summary.txt
 
 ```
 sudo singularity build <name_of_the_image>.simg <name_of_the_Singularity_Definition_File>
-
 ```
+<br>
+
 >This will result in a .simg file in the same directory, which can be transfered and copied anywhere you wish to run it.
 
 ### **Step 2: The Snakemake Pipeline**
