@@ -84,11 +84,11 @@ source activate /opt/conda/envs/LQTQ
 snakemake -j --snakefile /LGASnakefile --use-conda --nolock --quiet --keep-going
 snakemake -j --snakefile /LGASnakefile --dag | dot -Tpdf > DAG.pdf
 snakemake -j --snakefile /LGASnakefile --summary > Summary.txt
-
 rm -R config
+
 ```
 >The first row activates the first sub-environment, which also has snakemake installed, to begin the process. The second one is actually the command that initializes the workflow.
->> Braking down the snakemake command used:
+>>Braking down the snakemake command used:
 * j: The number of available cores. If the number is ommited, it is determined by Snakemake as the number of available CPU cores the machine has (for parallelism, discussed later).
 * snakefile: The file which includes the rule definitions. Included during the %files stage while building the image.
 * use-conda: Make conda use the specific environment mentioned in each rule for its execution.
