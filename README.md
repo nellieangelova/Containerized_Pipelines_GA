@@ -1,5 +1,5 @@
 # **Containerized Pipelines for Genome Assembly Analyses**
-Welcome to a developer's guide for creating re-usable, block-builded, automated containerized pipelines. The steps are taken from the [SnakeCube Project](https://nellieangelova.github.io/De-Novo_Genome_Assembly_Pipelines/) Project.
+Welcome to a developers' guide for creating re-usable, block-builded, automated containerized pipelines. The steps are taken from the [SnakeCube Project](https://nellieangelova.github.io/De-Novo_Genome_Assembly_Pipelines/).
 <br>
 
 ## Welcome to a guide for building and maintaining the ready to go, containerized workflows of HCMR, for analyzing genome data.
